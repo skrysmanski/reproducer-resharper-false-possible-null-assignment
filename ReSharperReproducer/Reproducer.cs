@@ -1,10 +1,34 @@
-﻿namespace ReSharperReproducer
+﻿using System;
+using System.Collections.Generic;
+
+using JetBrains.Annotations;
+
+namespace ReSharperReproducer
 {
     public class Reproducer
     {
-        public void ReproducerMethod()
+        [NotNull]
+        public List<string> DoSomething(bool doIt)
         {
+            List<string> logEntries = null;
 
+            if (doIt)
+            {
+                Action action = () =>
+                {
+                    logEntries = PerformReadRequest();
+                };
+
+                action();
+            }
+
+            return logEntries ?? new List<string>();
+        }
+
+        [CanBeNull]
+        private List<string> PerformReadRequest()
+        {
+            return null;
         }
     }
 }
